@@ -19,7 +19,8 @@ jobs :
       - name : run_script
         run : |
          chmod +x script2.sh
-         ./script2.sh
+         ./script2.sh 
+         
     
 
 
