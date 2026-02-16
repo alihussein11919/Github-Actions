@@ -19,11 +19,11 @@ jobs:
       - name: Create dragon.txt
         run: echo hello > path/to/artifact/dragon.txt
 
-      - name: Upload artifact
+      - name: Upload initial artifact
         uses: actions/upload-artifact@v4
         with:
           name: my-artifact
-          path: path/to/artifact/dragon.txt
+          path: dragon.txt
 
       - name: List files
         run: ls -ltra
@@ -31,7 +31,10 @@ jobs:
       - name: Run custom script
         run: |
           chmod +x .github/script2.sh
-          ./.github/script2.sh  
+          ./.github/script2.sh
 
-
-          
+      - name: Upload dragon.txt
+        uses: actions/upload-artifact@v4
+        with:
+          name: dragon-output
+          path: dragon.txt
