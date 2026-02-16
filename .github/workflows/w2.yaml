@@ -32,4 +32,3 @@ jobs:
         run: |
           chmod +x .github/script2.sh
           ./.github/script2.sh
-99
