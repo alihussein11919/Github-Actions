@@ -25,4 +25,4 @@ jobs:
           context: .
           file: .github/Dockerfile
           push: true
-          tags: user/app:latest
+          tags: aliiiiiii1234/app:latest
