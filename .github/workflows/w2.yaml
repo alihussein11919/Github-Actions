@@ -19,7 +19,7 @@ jobs :
       - name : run_script
         run : |
          chmod +x scrip2t.sh
-         ./script.sh
+         ./script2.sh
     
 
 
