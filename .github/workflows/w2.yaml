@@ -23,5 +23,7 @@ jobs:
 
       - name: Run custom script
         run: |
-          chmod +x script2.sh
-          .github/script2.sh
+         - name: Run custom script
+           chmod +x .github/script2.sh
+           ./.github/script2.sh
+
