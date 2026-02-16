@@ -10,8 +10,8 @@ jobs :
 
     steps : 
 
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v6.0.0
       
       - name : run_script
         run : ls -ltra 
