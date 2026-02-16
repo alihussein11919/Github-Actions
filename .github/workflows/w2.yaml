@@ -1,27 +1,27 @@
-name : my_second_workflow
+name: my_second_workflow
 
-on : 
-  push :
-    branches : main
+on:
+  push:
+    branches:
+      - main
 
-jobs : 
-  first_job : 
-    runs-on : ubuntu-latest
+jobs:
+  first_job:
+    runs-on: ubuntu-latest
 
-    steps : 
+    steps:
+      - run: mkdir -p path/to/artifact
+      - run: echo hello > path/to/artifact/dragon.txt
 
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v6.0.0
-      
-      - name : run_script
-        run : ls -ltra 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: path/to/artifact/dragon.txt
 
-      - name : run_script
-        run : |
-         chmod +x script2.sh
-         ./script2.sh 
-         
-    
+      - name: List files
+        run: ls -ltra
 
-
-      
+      - name: Run custom script
+        run: |
+          chmod +x script2.sh
+          ./script2.sh
