@@ -10,8 +10,16 @@ jobs :
 
     steps : 
 
-      -name : list_files
-      run : ls -ltra
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      
+      - name : run_script
+        run : ls -ltra 
 
-      -name : run shell script 
-      run : echo " hello from my file"
+      - name : run_script
+        run : |
+         chmod +x script.sh
+         ./script.sh
+
+
+      
