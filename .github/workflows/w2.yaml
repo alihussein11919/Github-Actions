@@ -10,10 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: mkdir -p path/to/artifact
-      - run: echo hello > path/to/artifact/dragon.txt
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/upload-artifact@v4
+      - name: Create artifact directory
+        run: mkdir -p path/to/artifact
+
+      - name: Create dragon.txt
+        run: echo hello > path/to/artifact/dragon.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: my-artifact
           path: path/to/artifact/dragon.txt
@@ -23,7 +30,6 @@ jobs:
 
       - name: Run custom script
         run: |
-         - name: Run custom script
-           chmod +x .github/script2.sh
-           ./.github/script2.sh
-
+          chmod +x .github/script2.sh
+          ./.github/script2.sh
+99
