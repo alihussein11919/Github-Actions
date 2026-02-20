@@ -1,8 +1,8 @@
 import csv
 from datetime import datetime
+from copy import deepcopy
 
 OUTPUT_FILE = "orders_from_dict.csv"
-
 
 DUMMY_DATA = [
     {
@@ -40,44 +40,55 @@ DUMMY_DATA = [
 ]
 
 
-
 def extract():
-    print("Extracting data from dictionary...")
-    return DUMMY_DATA
-
+    """Return a copy of source data."""
+    print("Extracting data...")
+    return deepcopy(DUMMY_DATA)
 
 
 def transform(data):
+    """Apply business transformations."""
     print("Transforming data...")
 
+    transformed = []
+
     for row in data:
-        # Calculate total
-        row["total_amount"] = row["quantity"] * row["unit_price"]
+        new_row = row.copy()
 
-        # Convert date
-        parsed_date = datetime.strptime(row["order_date"], "%Y-%m-%d")
-        row["order_year"] = parsed_date.year
-        row["order_month"] = parsed_date.month
-        row["order_day_name"] = parsed_date.strftime("%A")
+        # Safe numeric conversion
+        quantity = int(new_row["quantity"])
+        unit_price = float(new_row["unit_price"])
 
-        # Business logic flag
-        row["high_value_order"] = row["total_amount"] > 500
+        total_amount = quantity * unit_price
 
-    return data
+        parsed_date = datetime.strptime(new_row["order_date"], "%Y-%m-%d")
+
+        new_row.update({
+            "total_amount": total_amount,
+            "order_year": parsed_date.year,
+            "order_month": parsed_date.month,
+            "order_day_name": parsed_date.strftime("%A"),
+            "high_value_order": total_amount > 500
+        })
+
+        transformed.append(new_row)
+
+    return transformed
 
 
-def load(data):
-    print(f"Loading data into {OUTPUT_FILE}...")
+def load(data, output_file=OUTPUT_FILE):
+    """Write data to CSV."""
+    print(f"Loading data into {output_file}...")
 
     fieldnames = data[0].keys()
 
-    with open(OUTPUT_FILE, mode="w", newline="", encoding="utf-8") as file:
+    with open(output_file, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(data)
 
     print("CSV file created successfully.")
-
+    return output_file
 
 
 def main():
