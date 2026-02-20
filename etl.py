@@ -76,8 +76,8 @@ def transform(data):
     return transformed
 
 
-def load_csv(data, output_file=OUTPUT_FILE):
-    """Write data to CSV."""
+def load(data, output_file=OUTPUT_FILE):
+    """Write data to CSV (kept for tests)."""
     print(f"Loading data into {output_file}...")
 
     fieldnames = data[0].keys()
@@ -91,16 +91,14 @@ def load_csv(data, output_file=OUTPUT_FILE):
 
 
 def load_sqlite(data, db_file=DB_FILE):
-    """Write data to SQLite database."""
+    """Write data to SQLite database for dbt."""
     print(f"Loading data into {db_file}...")
 
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
 
-    # Drop table if exists
     cursor.execute("DROP TABLE IF EXISTS raw_orders")
 
-    # Create table
     cursor.execute("""
         CREATE TABLE raw_orders (
             order_id INTEGER,
@@ -117,7 +115,6 @@ def load_sqlite(data, db_file=DB_FILE):
         )
     """)
 
-    # Insert rows
     for row in data:
         cursor.execute("""
             INSERT INTO raw_orders VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -144,8 +141,8 @@ def load_sqlite(data, db_file=DB_FILE):
 def main():
     data = extract()
     transformed = transform(data)
-    load_csv(transformed)
-    load_sqlite(transformed)
+    load(transformed)          # CSV for tests
+    load_sqlite(transformed)   # SQLite for dbt
 
 
 if __name__ == "__main__":
