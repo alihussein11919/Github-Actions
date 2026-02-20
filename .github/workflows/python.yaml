@@ -19,6 +19,9 @@ jobs:
 
       - name: run etl-script
         run: python etl.py
+      
+      - name: install test dependencies
+        run: pip install pytest
 
       - name: run tests
         run: pytest tests.py
