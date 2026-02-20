@@ -17,14 +17,17 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: run etl-script
-        run: python etl.py
+      - name: install test dependenciesss
+        run: pip install datetime
       
       - name: install test dependencies
         run: pip install pytest
 
       - name: install dependencies
-        run: pip install pandas  
+        run: pip install pandas 
+
+      - name: run etl-script
+        run: python etl.py
 
       - name: run tests
         run: pytest tests.py
