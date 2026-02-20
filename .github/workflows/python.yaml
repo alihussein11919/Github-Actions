@@ -18,7 +18,7 @@ jobs:
           python-version: '3.10'
 
       - name: run etl-script
-        run: python python_etl.py
+        run: python etl.py
 
       - name: run tests
         run: pytest tests.py
