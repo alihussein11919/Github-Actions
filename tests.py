@@ -1,31 +1,78 @@
-import unittest
+import os
+import csv
+import pytest
+from etl import extract, transform, load, OUTPUT_FILE
 
-# Function we want to test
-def add_numbers(a, b):
-    return a + b
 
-def divide_numbers(a, b):
-    if b == 0:
-        raise ValueError("Division by zero is not allowed")
-    return a / b
+# ---------------------------
+# Test Extract
+# ---------------------------
+def test_extract_returns_list():
+    data = extract()
+    assert isinstance(data, list)
+    assert len(data) > 0
+    assert isinstance(data[0], dict)
 
-# Test case class
-class TestMathFunctions(unittest.TestCase):
 
-    def test_add_numbers(self):
-        self.assertEqual(add_numbers(2, 3), 5)
-        self.assertEqual(add_numbers(-1, 1), 0)
-        self.assertEqual(add_numbers(0, 0), 0)
+# ---------------------------
+# Test Transform Logic
+# ---------------------------
+def test_transform_adds_fields():
+    data = extract()
+    transformed = transform(data)
 
-    def test_divide_numbers(self):
-        self.assertEqual(divide_numbers(10, 2), 5)
-        self.assertAlmostEqual(divide_numbers(7, 3), 2.3333, places=4)
+    sample = transformed[0]
 
-    def test_divide_by_zero(self):
-        with self.assertRaises(ValueError):
-            divide_numbers(5, 0)
+    # Check new fields exist
+    assert "total_amount" in sample
+    assert "order_year" in sample
+    assert "order_month" in sample
+    assert "order_day_name" in sample
+    assert "high_value_order" in sample
 
-# Run tests
-if __name__ == '__main__':
-    unittest.main()
+    # Check calculation correctness
+    assert sample["total_amount"] == sample["quantity"] * sample["unit_price"]
 
+
+# ---------------------------
+# Test Load Creates File
+# ---------------------------
+def test_load_creates_csv(tmp_path):
+    test_file = tmp_path / "test_output.csv"
+
+    data = transform(extract())
+
+    # Temporarily override output file
+    load(data)
+
+    # Check file exists
+    assert os.path.exists(OUTPUT_FILE)
+
+
+# ---------------------------
+# Test CSV Content Structure
+# ---------------------------
+def test_csv_has_expected_columns():
+    data = transform(extract())
+    load(data)
+
+    with open(OUTPUT_FILE, newline="", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+        headers = reader.fieldnames
+
+    expected_columns = [
+        "order_id",
+        "customer_name",
+        "order_date",
+        "quantity",
+        "unit_price",
+        "shipping_country",
+        "total_amount",
+        "order_year",
+        "order_month",
+        "order_day_name",
+        "high_value_order",
+    ]
+
+    for col in expected_columns:
+        assert col in headers
