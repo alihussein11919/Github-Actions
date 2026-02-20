@@ -27,6 +27,9 @@ jobs:
 
       - name: Run tests
         run: pytest tests.py
+      
+      - name: List repo files
+        run: ls -R
 
       - name: Create dbt profile
         run: |
