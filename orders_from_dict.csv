@@ -1,0 +1,5 @@
+order_id,customer_name,order_date,quantity,unit_price,shipping_country,total_amount,order_year,order_month,order_day_name,high_value_order
+1001,Ali Hassan,2026-01-03,2,150.0,Egypt,300.0,2026,1,Saturday,False
+1002,Sara Ahmed,2026-01-05,1,1200.0,UAE,1200.0,2026,1,Monday,True
+1003,John Smith,2026-01-07,5,40.0,USA,200.0,2026,1,Wednesday,False
+1004,Omar Khaled,2026-01-10,3,500.0,Egypt,1500.0,2026,1,Saturday,True
