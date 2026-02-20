@@ -1,6 +1,6 @@
-import pandas as pd
+import csv
 
-# Static input data (list of strings)
+# Static input data
 INPUT_DATA = [
     "hello world",
     "python etl",
@@ -11,28 +11,31 @@ INPUT_DATA = [
 OUTPUT_FILE = "etl_output.csv"
 
 def extract():
-    """Extract static strings into a DataFrame."""
+    """Extract static strings into a list of dicts."""
     print("Extracting data...")
-    df = pd.DataFrame(INPUT_DATA, columns=["raw_text"])
-    return df
+    return [{"raw_text": text} for text in INPUT_DATA]
 
-def transform(df):
-    """Transform strings (example: uppercase and add length)."""
+def transform(data):
+    """Transform strings (uppercase and length)."""
     print("Transforming data...")
-    df["upper_text"] = df["raw_text"].str.upper()
-    df["text_length"] = df["raw_text"].str.len()
-    return df
+    for row in data:
+        row["upper_text"] = row["raw_text"].upper()
+        row["text_length"] = len(row["raw_text"])
+    return data
 
-def load(df):
+def load(data):
     """Load transformed data into a CSV file."""
     print(f"Loading data into {OUTPUT_FILE}...")
-    df.to_csv(OUTPUT_FILE, index=False)
+    with open(OUTPUT_FILE, mode="w", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=["raw_text", "upper_text", "text_length"])
+        writer.writeheader()
+        writer.writerows(data)
     print("Data loaded successfully.")
 
 def main():
-    df = extract()
-    df = transform(df)
-    load(df)
+    data = extract()
+    transformed = transform(data)
+    load(transformed)
 
 if __name__ == "__main__":
     main()
