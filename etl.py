@@ -1,8 +1,10 @@
 import csv
+import sqlite3
 from datetime import datetime
 from copy import deepcopy
 
 OUTPUT_FILE = "orders_from_dict.csv"
+DB_FILE = "etl.db"
 
 DUMMY_DATA = [
     {
@@ -55,10 +57,8 @@ def transform(data):
     for row in data:
         new_row = row.copy()
 
-        # Safe numeric conversion
         quantity = int(new_row["quantity"])
         unit_price = float(new_row["unit_price"])
-
         total_amount = quantity * unit_price
 
         parsed_date = datetime.strptime(new_row["order_date"], "%Y-%m-%d")
@@ -76,12 +76,11 @@ def transform(data):
     return transformed
 
 
-def load(data, output_file=OUTPUT_FILE):
+def load_csv(data, output_file=OUTPUT_FILE):
     """Write data to CSV."""
     print(f"Loading data into {output_file}...")
 
     fieldnames = data[0].keys()
-
     with open(output_file, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
@@ -91,10 +90,62 @@ def load(data, output_file=OUTPUT_FILE):
     return output_file
 
 
+def load_sqlite(data, db_file=DB_FILE):
+    """Write data to SQLite database."""
+    print(f"Loading data into {db_file}...")
+
+    conn = sqlite3.connect(db_file)
+    cursor = conn.cursor()
+
+    # Drop table if exists
+    cursor.execute("DROP TABLE IF EXISTS raw_orders")
+
+    # Create table
+    cursor.execute("""
+        CREATE TABLE raw_orders (
+            order_id INTEGER,
+            customer_name TEXT,
+            order_date TEXT,
+            quantity INTEGER,
+            unit_price REAL,
+            shipping_country TEXT,
+            total_amount REAL,
+            order_year INTEGER,
+            order_month INTEGER,
+            order_day_name TEXT,
+            high_value_order BOOLEAN
+        )
+    """)
+
+    # Insert rows
+    for row in data:
+        cursor.execute("""
+            INSERT INTO raw_orders VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            row["order_id"],
+            row["customer_name"],
+            row["order_date"],
+            row["quantity"],
+            row["unit_price"],
+            row["shipping_country"],
+            row["total_amount"],
+            row["order_year"],
+            row["order_month"],
+            row["order_day_name"],
+            row["high_value_order"]
+        ))
+
+    conn.commit()
+    conn.close()
+    print("SQLite database created successfully.")
+    return db_file
+
+
 def main():
     data = extract()
     transformed = transform(data)
-    load(transformed)
+    load_csv(transformed)
+    load_sqlite(transformed)
 
 
 if __name__ == "__main__":
