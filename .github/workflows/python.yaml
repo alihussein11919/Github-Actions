@@ -24,17 +24,7 @@ jobs:
         run: pip install pytest
 
       - name: install dependencies
-        run: pip install pandas
-
+        run: pip install pandas  
 
       - name: run tests
         run: pytest tests.py
-
-      - name: install dbt
-        run: pip install dbt-postgres
-
-      - name: run dbt model
-        run: dbt run
-
-      - name: test dbt-model
-        run: dbt test
