@@ -21,7 +21,7 @@ jobs:
         run: python /workspaces/Github-Actions/etl.py
 
       - name: run tests
-        run: pytest /workspaces/Github-Actions/tests.py
+        run: pytest s/workspaces/Github-Actions/tests.py
 
       - name: install dbt
         run: pip install dbt-postgres
