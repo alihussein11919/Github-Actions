@@ -18,10 +18,10 @@ jobs:
           python-version: '3.10'
 
       - name: run etl-script
-        run: python /workspaces/Github-Actions/.github/etl.py
+        run: python /workspaces/Github-Actions/etl.py
 
       - name: run tests
-        run: pytest /workspaces/Github-Actions/.github/tests.py
+        run: pytest /workspaces/Github-Actions/tests.py
 
       - name: install dbt
         run: pip install dbt-postgres
