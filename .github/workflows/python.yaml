@@ -16,12 +16,12 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          
+
       - name: run etl-script
-        run: python .github/etl.py
+        run: python etl.py
 
       - name: run tests
-        run: pytest .github/tests.py
+        run: pytest tests.py
 
       - name: install dbt
         run: pip install dbt-postgres
