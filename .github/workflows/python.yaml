@@ -1,4 +1,4 @@
-name: etl job_final_2
+name: etl job_final_2s 
 
 on:
   push:
