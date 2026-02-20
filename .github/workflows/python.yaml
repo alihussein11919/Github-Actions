@@ -31,7 +31,7 @@ jobs:
       - name: List repo files
         run: ls -R
 
-           - name: Create dbt profile
+      - name: Create dbt profile
         run: |
           mkdir -p ~/.dbt
           echo "
