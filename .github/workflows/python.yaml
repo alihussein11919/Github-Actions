@@ -9,31 +9,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: setup python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: install test dependenciesss
-        run: pip install datetime
-      
-      - name: install test dependencies
-        run: pip install pytest
+      - name: Install dependencies
+        run: |
+          pip install pytest pandas
+          pip install dbt-core dbt-sqlite
 
-      - name: install dependencies
-        run: pip install pandas 
-
-      - name: run etl-script
+      - name: Run ETL script
         run: python etl.py
 
-      - name: run tests
+      - name: Run tests
         run: pytest tests.py
-
-      - name : install dbt
-        run: pip install dbt-core dbt-sqlite
 
       - name: Create dbt profile
         run: |
@@ -45,20 +38,16 @@ jobs:
               dev:
                 type: sqlite
                 threads: 1
-                database: 'etl.db'
+                database: etl.db
                 schema: main
-                schemas_and_paths:
-                  main: './'
-                schema_directory: './'
           " > ~/.dbt/profiles.yml
 
-    
       - name: Run dbt models
         run: |
-          cd dbt_project
+          cd dbt
           dbt run
 
       - name: Run dbt tests
         run: |
-          cd dbt_project
+          cd dbt
           dbt test
