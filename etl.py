@@ -1,11 +1,6 @@
 import csv
 from datetime import datetime
 from copy import deepcopy
-import sqlite3
-
-conn = sqlite3.connect("etl.db")
-df.to_sql("raw_orders", conn, if_exists="replace", index=False)
-conn.close()
 
 OUTPUT_FILE = "orders_from_dict.csv"
 
