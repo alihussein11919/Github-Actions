@@ -16,10 +16,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-
-      - name: install dependencies
-        run: pip install -r requirements.txt
-
+          
       - name: run etl-script
         run: python .github/etl.py
 
