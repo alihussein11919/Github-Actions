@@ -27,7 +27,7 @@ jobs:
 
       - name: Run tests
         run: pytest tests.py
-      
+
       - name: List repo files
         run: ls -R
 
@@ -47,10 +47,10 @@ jobs:
 
       - name: Run dbt models
         run: |
-          cd dbt
+          cd dbt_project
           dbt run
 
       - name: Run dbt tests
         run: |
-          cd dbt
+          cd dbt_project
           dbt test

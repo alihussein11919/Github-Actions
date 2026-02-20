@@ -1,0 +1,16 @@
+name: dbt_project
+version: 1.0.0
+config-version: 2
+
+profile: dbt_project
+
+model-paths: ["models"]
+
+# Optional: where dbt will put compiled SQL and run results
+target-path: "target"
+clean-targets: ["target", "dbt_modules"]
+
+# Example model configuration defaults
+models:
+  dbt_project:
+    +materialized: view
