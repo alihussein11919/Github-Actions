@@ -31,3 +31,6 @@ jobs:
 
       - name: run tests
         run: pytest tests.py
+
+      - name : install dbt
+        run: pip install dbt-core dbt-sqlite

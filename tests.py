@@ -4,9 +4,6 @@ import pytest
 from etl import extract, transform, load, OUTPUT_FILE
 
 
-# ---------------------------
-# Test Extract
-# ---------------------------
 def test_extract_returns_list():
     data = extract()
     assert isinstance(data, list)
@@ -14,9 +11,6 @@ def test_extract_returns_list():
     assert isinstance(data[0], dict)
 
 
-# ---------------------------
-# Test Transform Logic
-# ---------------------------
 def test_transform_adds_fields():
     data = extract()
     transformed = transform(data)
