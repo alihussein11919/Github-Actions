@@ -12,16 +12,12 @@ RUN apt-get update && \
     apt-get install -y gcc sqlite3 && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first (Docker caching optimization)
 COPY requirements.txt .
 
-# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy entire project
 COPY . .
 
-# Create dbt profile directory
 RUN mkdir -p /root/.dbt
 
 # Create dbt profiles.yml
