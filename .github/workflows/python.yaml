@@ -82,8 +82,16 @@ jobs:
             -t ${{ secrets.DOCKER_USER_NAME }}/etl-dbt-pipeline:${{ github.sha }} \
             -t ${{ secrets.DOCKER_USER_NAME }}/etl-dbt-pipeline:latest \
             .
-
-      - name: Push Docker images
+        
+        name: Build and push Docker images
+        uses: docker/build-push-action@v6.19.2
+        name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: user/app:latest_python_push
+      
+      - name: Push Docker images  
         run: |
           docker push ${{ secrets.DOCKER_USER_NAME }}/etl-dbt-pipeline:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USER_NAME }}/etl-dbt-pipeline:latest
