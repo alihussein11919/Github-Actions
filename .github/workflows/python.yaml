@@ -1,4 +1,4 @@
-name: etl job_final_2s 
+name: etl_job_final_2s
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -25,11 +26,13 @@ jobs:
       - name: Run ETL script
         run: python etl.py
 
-      - name: Run tests
+      - name: Run Python tests
         run: pytest tests.py
 
-      - name: List repo files
-        run: ls -R
+      - name: Debug file structure
+        run: |
+          pwd
+          ls -R
 
       - name: Create dbt profile
         run: |
@@ -44,16 +47,12 @@ jobs:
                 database: etl.db
                 schema: main
                 schemas_and_paths:
-                  main: './'
-                schema_directory: './'
+                  main: '.'
+                schema_directory: '.'
           " > ~/.dbt/profiles.yml
 
       - name: Run dbt models
-        run: |
-          cd dbt_project
-          dbt run
+        run: dbt run --project-dir dbt_project
 
       - name: Run dbt tests
-        run: |
-          cd dbt_project
-          dbt test
+        run: dbt test --project-dir dbt_project

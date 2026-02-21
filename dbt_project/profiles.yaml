@@ -7,5 +7,5 @@ dbt_project:
       database: etl.db
       schema: main
       schemas_and_paths:
-        main: './'
-      schema_directory: './'
+        main: '.'
+      schema_directory: '.'
