@@ -59,6 +59,12 @@ jobs:
       - name: Run dbt models
         run: dbt run --project-dir dbt_project
 
+      - name: Show dbt model output
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sqlite3
+          sqlite3 etl.db "SELECT * FROM stg LIMIT 10;"
+
       - name: Run dbt tests
         run: dbt test --project-dir dbt_project
 
