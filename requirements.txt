@@ -1,0 +1,4 @@
+pytest
+pandas
+dbt-core==1.11.6
+dbt-sqlite==1.10.0
