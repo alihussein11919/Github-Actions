@@ -63,18 +63,7 @@ jobs:
         run: dbt test --project-dir dbt_project
 
 
-name: etl_dbt_pipeline_ci
 
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
